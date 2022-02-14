@@ -1,11 +1,17 @@
-import type { NextPage } from 'next'
-import LayoutCopmonent from '../components/layout'
-import styles from '../styles/Home.module.css'
+import Home from "../components/home";
+import { clinetApi } from '../api/client'
 
-const Home: NextPage = () => {
-  return (
-    <LayoutCopmonent />
-  )
+export default Home;
+
+export async function getServerSideProps(context: Object) {
+
+  const url = `${clinetApi}option`;
+
+  const options = await fetch(url, { method: "get" }).then(res => res.json());
+
+  return {
+    props: {
+      options
+    }, // will be passed to the page component as props
+  }
 }
-
-export default Home
