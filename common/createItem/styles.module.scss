@@ -1,0 +1,26 @@
+@import "../../styles/variables.module.scss";
+
+.item {
+  width: 250px;
+  height: 280px;
+  border: 1px solid $gray85;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > span {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #001529;
+    border-radius: 50%;
+    &:hover {
+      background-color: #0a2d4e;
+    }
+    svg path {
+      fill: white;
+    }
+  }
+}
