@@ -1,0 +1,30 @@
+@import "../../styles/variables.module.scss";
+
+.modal {
+  min-width: 620px;
+  width: 95%;
+  & > div {
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .close {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #001529;
+    border-radius: 50%;
+    margin-top: 20px;
+    svg path {
+      fill: white;
+    }
+    &:hover {
+      background-color: #0a2d4e;
+    }
+  }
+  .title {
+    font-weight: bold;
+    color: $black;
+  }
+}

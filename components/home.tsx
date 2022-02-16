@@ -1,8 +1,6 @@
 import CommonLayout from '../common/commonLayout'
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { log } from 'console';
-
 interface options {
     options: Array<Object>
 }
