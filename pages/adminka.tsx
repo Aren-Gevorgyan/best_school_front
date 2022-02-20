@@ -9,14 +9,14 @@ export async function getServerSideProps(context: Object) {
     const questionUrl = `${clinetApi}question`;
 
 
-    const options = await fetch(optionUrl, { method: "get" }).then(res => res.json());
+    // const options = await fetch(optionUrl, { method: "get" }).then(res => res.json());
 
-    const questions = await fetch(questionUrl, { method: "get" }).then(res => res.json());
+    // const questions = await fetch(questionUrl, { method: "get" }).then(res => res.json());
 
     return {
         props: {
-            options,
-            questions
+            // options,
+            // questions
         }, // will be passed to the page component as props
     }
 }
