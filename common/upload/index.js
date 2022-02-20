@@ -1,18 +1,62 @@
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import { Modal, notification } from "antd";
+import { Modal, notification, Upload } from "antd";
 import Image from "next/image";
-import SvgPlus from "../svgIcons/Plus";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import { storage } from "../../utils/firebase";
 
-const Upload = ({ onLoad }) => {
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
+const getBase64 = (img, callback) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+
+const firebaseRequest = (image) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `images/${image}`);
+
+  // 'file' comes from the Blob or File API
+  uploadBytes(storageRef, image).then((snapshot) => {
+    console.log("Uploaded a blob or file!", snapshot);
+  });
+  // const mountainsRef = ref(storage, image);
+
+  // Create a reference to 'images/mountains.jpg'
+  // const mountainImagesRef = ref(storage, `images/${image}`);
+  // console.log(mountainsRef, "mountainsRef")
+  // console.log(mountainImagesRef, 'mountainImagesRef')
+  // const upload = storage.ref(`images/${image}`).put(image);
+  // upload.on(
+  //   "state_changed",
+  //   snapshot => {},
+  //   error => {
+  //     notification.error({
+  //       message: error
+  //     })
+  //   },
+  //   async () => {
+  //       const result = await storage.ref('images').child(image).getDownloadURL();
+  //       console.log(result, "result");
+  //       return result;
+  //   }
+  // )
+};
+
+const UploadImage = ({ onLoad }) => {
   const [img, setImg] = useState();
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [fileList, setFileList] = useState(img || []);
 
-  const handleChange = ({ fileList: newFileList }) => {
-    const file = newFileList[newFileList.length - 1];
-    if (file) file.status = "done";
-    setFileList(newFileList);
+  const handleChange = async (info) => {
+    setFileList(info.fileList);
+    console.log(info.file.name, "info");
+    const data = await firebaseRequest(info.file.name);
+    setImg(data);
+    setLoading(false);
   };
 
   const beforeUpload = (file) => {
@@ -33,30 +77,48 @@ const Upload = ({ onLoad }) => {
       notification.error({ message: "error:Image must smaller than 50MB!" });
     }
 
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      // setImg(reader.result)
+      const data = await firebaseRequest(reader.result);
+      console.log(data, "data");
+      setFileList([reader.result]);
+      // console.log(reader.result, 'result')
+    };
+
     return isJpgOrPng && isLt2M;
   };
 
   const handleCancel = () => setShowModal(false);
 
-  const handlePreview = async (file) => {
+  const handlePreview = (file) => {
+    // console.log(file, "handlePreview")
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+      getBase64(file.originFileObj, (result) => {
+        file.preview = result;
+      });
     }
 
-    setImg(file.url || file.preview);
+    // setImg(file.url || file.preview);
   };
 
   const uploadButton = (
     <div>
-      <SvgPlus />
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
+      {!!img && (
+        <Image src={img} layout="fixed" width={50} height={50} alt="ssds" />
+      )}
     </div>
   );
+
+  console.log(img, "img");
 
   return (
     <>
       <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        accept="image/jpg, image/png, image/jpeg "
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
@@ -72,8 +134,8 @@ const Upload = ({ onLoad }) => {
   );
 };
 
-Upload.propTypes = {
+UploadImage.propTypes = {
   onLoad: PropTypes.func.isRequired,
 };
 
-export default Upload;
+export default UploadImage;
