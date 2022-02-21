@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebase = initializeApp({
   apiKey: "AIzaSyAltzRT2O4U3SCQFzK23HWdjTPW-pdaR1Y",
@@ -11,6 +11,22 @@ const firebase = initializeApp({
   measurementId: "G-NJ9Z3FTD5Q",
 });
 
-const storage = getStorage(firebase);
 
-export { storage };
+const storage = getStorage(firebase);;
+
+const firebaseRequest = (file) => {
+  const storageRef = ref(storage, `images/${file.name}`);
+
+  // Create file metadata including the content type
+  const metadata = {
+    contentType: file.type,
+  };
+
+  // Upload the file and metadata
+  const uploadTask = uploadBytes(storageRef, file, metadata);
+
+  return uploadTask;
+};
+
+
+export { firebaseRequest };
