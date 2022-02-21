@@ -4,46 +4,8 @@ import { Modal, notification, Upload } from "antd";
 import Image from "next/image";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { storage } from "../../utils/firebase";
+import { firebaseRequest } from "../../utils/firebase";
 
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-
-const firebaseRequest = (image) => {
-  const storage = getStorage();
-  const storageRef = ref(storage, `images/${image}`);
-
-  // 'file' comes from the Blob or File API
-  uploadBytes(storageRef, image).then((snapshot) => {
-    console.log("Uploaded a blob or file!", snapshot);
-  });
-  // const mountainsRef = ref(storage, image);
-
-  // Create a reference to 'images/mountains.jpg'
-  // const mountainImagesRef = ref(storage, `images/${image}`);
-  // console.log(mountainsRef, "mountainsRef")
-  // console.log(mountainImagesRef, 'mountainImagesRef')
-  // const upload = storage.ref(`images/${image}`).put(image);
-  // upload.on(
-  //   "state_changed",
-  //   snapshot => {},
-  //   error => {
-  //     notification.error({
-  //       message: error
-  //     })
-  //   },
-  //   async () => {
-  //       const result = await storage.ref('images').child(image).getDownloadURL();
-  //       console.log(result, "result");
-  //       return result;
-  //   }
-  // )
-};
 
 const UploadImage = ({ onLoad }) => {
   const [img, setImg] = useState();
@@ -53,13 +15,10 @@ const UploadImage = ({ onLoad }) => {
 
   const handleChange = async (info) => {
     setFileList(info.fileList);
-    console.log(info.file.name, "info");
-    const data = await firebaseRequest(info.file.name);
-    setImg(data);
     setLoading(false);
   };
 
-  const beforeUpload = (file) => {
+  const beforeUpload = async (file) => {
     const isJpgOrPng =
       file.type === "image/jpeg" ||
       file.type === "image/png" ||
@@ -77,15 +36,9 @@ const UploadImage = ({ onLoad }) => {
       notification.error({ message: "error:Image must smaller than 50MB!" });
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      // setImg(reader.result)
-      const data = await firebaseRequest(reader.result);
-      console.log(data, "data");
-      setFileList([reader.result]);
-      // console.log(reader.result, 'result')
-    };
+    const data = await firebaseRequest(file);
+
+    console.log(data, 'data', 1111111111111111)
 
     return isJpgOrPng && isLt2M;
   };
