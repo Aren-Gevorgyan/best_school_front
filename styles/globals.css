@@ -14,3 +14,23 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.ant-upload.ant-upload-select-picture-card,
+.ant-upload-list-item,
+.ant-upload-list-item-done,
+.ant-upload-list-item-list-type-picture-card,
+.ant-upload-list-picture-card-container {
+  width: 100% !important;
+  height: 220px !important;
+  border-radius: 20px !important;
+  border: 1px dashed #212121 !important;
+  background-color: white !important;
+}
+
+.ant-upload-list-picture-card-container {
+  border: none !important;
+}
+
+.ant-upload-list-item-actions > a{
+  display: none !important;
+}

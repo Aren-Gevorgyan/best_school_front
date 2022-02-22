@@ -1,17 +1,13 @@
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import { Modal, notification, Upload } from "antd";
-import Image from "next/image";
+import {notification, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { firebaseRequest } from "../../utils/firebase";
 
-
 const UploadImage = ({ onLoad }) => {
-  const [img, setImg] = useState();
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [fileList, setFileList] = useState(img || []);
+  const [fileList, setFileList] = useState([]);
 
   const handleChange = async (info) => {
     setFileList(info.fileList);
@@ -38,52 +34,38 @@ const UploadImage = ({ onLoad }) => {
 
     const data = await firebaseRequest(file);
 
-    console.log(data, 'data', 1111111111111111)
+    const imgUrl = `https://firebasestorage.googleapis.com/v0/b/bestschool-16484.appspot.com/o/images%2F${data.metadata.name}?alt=media`;
+
+    onLoad(imgUrl);
 
     return isJpgOrPng && isLt2M;
   };
 
-  const handleCancel = () => setShowModal(false);
-
-  const handlePreview = (file) => {
-    // console.log(file, "handlePreview")
-    if (!file.url && !file.preview) {
-      getBase64(file.originFileObj, (result) => {
-        file.preview = result;
-      });
-    }
-
-    // setImg(file.url || file.preview);
-  };
+  const handlePreview = () => {
+    setShowModal(true)
+  }
 
   const uploadButton = (
-    <div>
+    <div className={styles.uploadContent}>
+      <p> Support PDF, JPG, JPEG, PNG</p>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-      {!!img && (
-        <Image src={img} layout="fixed" width={50} height={50} alt="ssds" />
-      )}
+      <div >Upload photo</div>
     </div>
   );
 
-  console.log(img, "img");
-
   return (
-    <>
+    <div className={styles.uploadContainer}>
       <Upload
         accept="image/jpg, image/png, image/jpeg "
         listType="picture-card"
         fileList={fileList}
-        onPreview={handlePreview}
         beforeUpload={beforeUpload}
         onChange={handleChange}
+        onPreview={handlePreview}
       >
-        {fileList.length >= 8 ? null : uploadButton}
+        {fileList.length < 1 && uploadButton}
       </Upload>
-      <Modal visible={showModal} footer={null} onCancel={handleCancel}>
-        <Image alt="example" style={{ width: "100%" }} src={img} />
-      </Modal>
-    </>
+    </div>
   );
 };
 

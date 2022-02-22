@@ -5,6 +5,7 @@ import CreateQuestions from '../common/createQuestion'
 import LayoutAdminka from '../common/layoutAdminka';
 import PropTypes from 'prop-types';
 import CommonLayout from '../common/commonLayout';
+import Image from 'next/image';
 interface props {
     options: Array<Object>
     questions: Array<Object>
@@ -16,6 +17,7 @@ const Adminka = ({ options, questions }: props) => {
         <CommonLayout>
             <CreateOption options={options} />
             <CreateQuestions questions={questions} />
+            {/* <Image layout='fill' src={"images/photo_2021-11-26_10-59-04.jpg"} alt={'sss'}/> */}
         </CommonLayout>
     )
 }
