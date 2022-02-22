@@ -1,3 +1,3 @@
 module.exports = {
-  clinetApi: "http://localhost:3020/",
+  clientApi: "http://localhost:3020/",
 };

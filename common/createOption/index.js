@@ -1,17 +1,46 @@
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 import CreateItem from "../createItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Modal } from "antd";
 import Upload from "../upload";
 import SvgClose from "../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
+import { clientApi } from "../../api/client";
 
 const CreateOption = ({ options }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [img, setImg] = useState("");
+  const [form] = Form.useForm();
 
   const onClick = () => {
     setIsModalVisible(true);
+  };
+
+  useEffect(() => {
+    !isModalVisible && form.resetFields();
+  }, [isModalVisible]);
+
+  const saveData = async (e) => {
+    const data = {
+      title: e.optionTitle,
+      item: {
+        itemTitle: e.itemTitle,
+        image: img,
+      },
+    };
+
+    const optionUrl = `${clientApi}option/create`;
+
+    const options = await fetch(optionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+
+    console.log(options, "options");
   };
 
   return (
@@ -34,12 +63,22 @@ const CreateOption = ({ options }) => {
       >
         <div className={styles.contentModal}>
           <Form
+            form={form}
             onFinish={(e) => {
-              console.log(e);
+              saveData(e);
             }}
           >
             <h3>Option title</h3>
-            <Form.Item name="optionTitle">
+            <Form.Item
+              name="optionTitle"
+              rules={[
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "This filed is required",
+                },
+              ]}
+            >
               <TextArea
                 className={styles.textArea}
                 rows={4}
@@ -49,7 +88,16 @@ const CreateOption = ({ options }) => {
             </Form.Item>
 
             <h3>Item title</h3>
-            <Form.Item name="optionTitle">
+            <Form.Item
+              name="itemTitle"
+              rules={[
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "This filed is required",
+                },
+              ]}
+            >
               <TextArea
                 className={styles.textArea}
                 rows={4}
@@ -59,13 +107,25 @@ const CreateOption = ({ options }) => {
             </Form.Item>
 
             <h3>Item image</h3>
-            <Form.Item name="optionTitle">
-              <Upload
-                onLoad={(e) => {
-                  console.log(e, "eeeee");
+            <Upload
+              onLoad={(e) => {
+                setImg(e);
+              }}
+            />
+            <div className={styles.buttonsContainer}>
+              <button
+                className={styles.cancelButton}
+                onClick={() => {
+                  setIsModalVisible(false);
                 }}
-              />
-            </Form.Item>
+              >
+                Cancel
+              </button>
+
+              <button className={styles.saveButton} type="submit">
+                Save
+              </button>
+            </div>
           </Form>
         </div>
       </Modal>

@@ -11,8 +11,7 @@ const firebase = initializeApp({
   measurementId: "G-NJ9Z3FTD5Q",
 });
 
-
-const storage = getStorage(firebase);;
+const storage = getStorage(firebase);
 
 const firebaseRequest = (file) => {
   const storageRef = ref(storage, `images/${file.name}`);
@@ -27,6 +26,5 @@ const firebaseRequest = (file) => {
 
   return uploadTask;
 };
-
 
 export { firebaseRequest };
