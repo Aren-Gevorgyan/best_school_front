@@ -1,0 +1,77 @@
+@import "../../../styles/variables.module.scss";
+
+.containerSelectedQuestions {
+  margin-bottom: 20px;
+  & > span,
+  & > input {
+    margin-top: 10px;
+    width: 100% !important;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: 1px solid #001529;
+    font-size: 16px;
+    font-weight: bold;
+    color: $black;
+    &:hover {
+      border: 1px solid #40a9ff;
+    }
+    &:focus {
+      border-color: #001529;
+      box-shadow: none;
+    }
+    & > span {
+      margin-right: 10px;
+    }
+  }
+  & > span {
+    cursor: pointer;
+  }
+  & > input {
+    background-color: white;
+    color: $black;
+  }
+}
+
+.questionsItem {
+  position: relative;
+  .rightAnswer {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: 100.4%;
+    top: 0px;
+    accent-color: #001529;
+  }
+
+  & > span {
+    min-height: 50px;
+    border: 1px solid #001529;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0;
+    background: white;
+    margin-bottom: 8px;
+    display: block;
+    word-break: break-word;
+    position: relative;
+    & > span {
+      position: absolute;
+      left: 100%;
+      bottom: 0;
+      line-height: inherit;
+      background: #092742;
+      padding: 5px;
+      padding-bottom: 3px;
+      border-radius: 5px;
+      &:hover {
+        background: #225886;
+      }
+      svg path {
+        fill: white;
+      }
+    }
+  }
+}

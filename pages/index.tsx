@@ -1,11 +1,11 @@
 import Home from "../components/home";
-import { clinetApi } from '../api/client'
+import { clientApi } from '../api/client'
 
 export default Home;
 
 export async function getServerSideProps(context: Object) {
 
-  const url = `${clinetApi}option`;
+  const url = `${clientApi}option`;
 
   const options = await fetch(url, { method: "get" }).then(res => res.json());
 
