@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import CreateItem from "../createItem";
 import { useEffect, useState } from "react";
 import { Form, Modal } from "antd";
-import Upload from "../upload";
 import SvgClose from "../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
 import { clientApi } from "../../api/client";
+import UploadImage from "../upload";
 
 const CreateOption = ({ options }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -33,14 +33,15 @@ const CreateOption = ({ options }) => {
     const optionUrl = `${clientApi}option/create`;
 
     const options = await fetch(optionUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    console.log(options, "options");
+    setIsModalVisible(false);
+
   };
 
   return (
@@ -106,8 +107,8 @@ const CreateOption = ({ options }) => {
               />
             </Form.Item>
 
-            <h3>Item image</h3>
-            <Upload
+            <h3>Item photo</h3>
+            <UploadImage
               onLoad={(e) => {
                 setImg(e);
               }}

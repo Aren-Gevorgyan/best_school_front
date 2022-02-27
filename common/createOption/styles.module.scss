@@ -46,8 +46,9 @@
       color: white;
       border: none;
       border-radius: 4px;
+      cursor: pointer;
       &:hover{
-        background: #011e3a;
+        background: #123b61;
       }
     }
     .cancelButton{
@@ -56,6 +57,7 @@
       color: #001529;
       border: none;
       background: white;
+      cursor: pointer;
       border-radius: 4px;
       border: 1px solid #001529;
       &:hover{

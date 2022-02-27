@@ -16,7 +16,7 @@ const Adminka = ({ options, questions }: props) => {
     return (
         <CommonLayout>
             <CreateOption options={options} />
-            <CreateQuestions questions={questions} />
+            <CreateQuestions options={options} questions={questions} />
             {/* <Image layout='fill' src={"images/photo_2021-11-26_10-59-04.jpg"} alt={'sss'}/> */}
         </CommonLayout>
     )
