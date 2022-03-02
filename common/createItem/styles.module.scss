@@ -1,13 +1,16 @@
 @import "../../styles/variables.module.scss";
 
 .item {
-  width: 250px;
-  height: 280px;
+  max-width: 250px;
+  max-height: 280px;
+  min-width: 250px;
+  min-height: 280px;
   border: 1px solid $gray85;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 40px;
   & > span {
     width: 40px;
     height: 40px;
