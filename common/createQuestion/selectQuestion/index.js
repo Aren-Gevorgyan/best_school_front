@@ -101,8 +101,8 @@ const SelectQuestions = ({
 SelectQuestions.propTypes = {
   selectedQuestions: PropTypes.array.isRequired,
   setSelectedQuestions: PropTypes.func.isRequired,
-  rightAnswer: PropTypes.array.isRequired,
-  setRightAnswer: PropTypes.array.isRequired,
+  rightAnswer: PropTypes.number.isRequired,
+  setRightAnswer: PropTypes.func.isRequired,
 };
 
 export default SelectQuestions;
