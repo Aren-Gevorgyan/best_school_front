@@ -4,17 +4,23 @@ import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 import CreateItem from "../createItem";
 import { useEffect, useState } from "react";
-import { Form, Modal } from "antd";
+import { Form, Modal, Select } from "antd";
 import SvgClose from "../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
 import { clientApi } from "../../api/client";
-import Option from "./option";
+import UploadImage from "../upload";
 import Head from "next/head";
+import OptionItems from "./optionItems";
 
-const CreateOption = ({ options }) => {
+const { Option } = Select;
+
+const CreateOptionItems = ({ itemsData, options }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [img, setImg] = useState("");
   const [loadingImg, setLoadingImg] = useState(false);
-  const [optionsItems, setOptionsItems] = useState(options);
+  const [optionId, setOptionId] = useState("");
+  const [optionItems, setOptionItems] = useState([]);
+  const [items, setItems] = useState(itemsData);
   const [form] = Form.useForm();
 
   const onClick = () => {
@@ -22,11 +28,12 @@ const CreateOption = ({ options }) => {
   };
 
   useEffect(() => {
-    setOptionsItems(options);
-  }, [options]);
+    setItems(itemsData);
+  }, [itemsData]);
 
   useEffect(() => {
     !isModalVisible && form.resetFields();
+    setImg("");
   }, [isModalVisible]);
 
   const saveData = async (e) => {
@@ -34,13 +41,15 @@ const CreateOption = ({ options }) => {
 
     const data = {
       title: e.optionTitle,
+      image: img,
+      optionId
     };
 
-    const optionUrl = `${clientApi}option/create`;
+    const optionUrl = `${clientApi}option-items/create`;
 
     setLoadingImg(true);
 
-    const option = await fetch(optionUrl, {
+    const item = await fetch(optionUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,9 +60,24 @@ const CreateOption = ({ options }) => {
     setLoadingImg(false);
     setIsModalVisible(false);
 
-    setOptionsItems([...optionsItems, option]);
+    setItems([...items, item]);
   };
 
+  useEffect(() => {
+    const optionsData = options?.map((value, index) => {
+      return (
+        <Option key={value._id + index} value={value._id}>
+          {value.title}
+        </Option>
+      );
+    });
+    setOptionItems(optionsData);
+  }, [options]);
+
+  const onChange = (value) => {
+    setOptionId(value);
+  }
+  console.log(items, 'items')
   return (
     <>
       <Head>
@@ -69,20 +93,20 @@ const CreateOption = ({ options }) => {
         />
       </Head>
       <div className={styles.container}>
-        <h2>Create Option</h2>
+        <h2>Create Option Item</h2>
 
         <div className={styles.containerItems}>
           <CreateItem onClick={onClick} />
-          <Option
-            options={optionsItems}
-            setOptionsItems={setOptionsItems}
+          <OptionItems
+            itemsData={items}
+            setItemsData={setItems}
             setIsModalVisible={setIsModalVisible}
           />
         </div>
 
         <Modal
           footer={null}
-          title={<h2 className={styles.title}>Create option</h2>}
+          title={<h2 className={styles.title}>Create option item</h2>}
           className={styles.modal}
           visible={isModalVisible}
           closeIcon={
@@ -101,7 +125,7 @@ const CreateOption = ({ options }) => {
                 saveData(e);
               }}
             >
-              <h3>Option title</h3>
+              <h3>Option item title</h3>
               <Form.Item
                 name="optionTitle"
                 rules={[
@@ -119,6 +143,29 @@ const CreateOption = ({ options }) => {
                   maxLength={200}
                 />
               </Form.Item>
+              <h3>Choose Question</h3>
+              <Form.Item name="chooseQuestion">
+                <Select
+                  className={styles.questionItem}
+                  showSearch
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                  filterOption={(input, option) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {optionItems}
+                </Select>
+              </Form.Item>
+              <h3>Option Item photo</h3>
+              <UploadImage
+                onLoad={(e) => {
+                  setImg(e);
+                }}
+              />
               <div className={styles.buttonsContainer}>
                 <button
                   className={styles.cancelButton}
@@ -141,12 +188,14 @@ const CreateOption = ({ options }) => {
   );
 };
 
-CreateOption.propTypes = {
+CreateOptionItems.propTypes = {
+  items: PropTypes.array,
   options: PropTypes.array,
 };
 
-CreateOption.defaultProps = {
+CreateOptionItems.defaultProps = {
+  items: [],
   options: [],
 };
 
-export default CreateOption;
+export default CreateOptionItems;

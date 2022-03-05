@@ -7,8 +7,8 @@ import SvgClose from "../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
 import UploadImage from "../upload";
 import SelectQuestions from "./selectQuestion";
-import { querystring } from "@firebase/util";
 import { clientApi } from "../../api/client";
+import QuestionItems from './questionItems';
 
 const { Option } = Select;
 
@@ -19,7 +19,12 @@ const CreateQuestion = ({ options, questions }) => {
   const [rightAnswer, setRightAnswer] = useState(0);
   const [optionItems, setOptionItems] = useState([]);
   const [optionId, setOptionId] = useState("");
+  const [questionsData, setQuestionsData] = useState(questions);
   const [form] = Form.useForm();
+
+  useEffect(()=>{
+    setQuestionsData(questions)
+  }, [questions])
 
   const onClick = () => {
     setIsModalVisible(true);
@@ -28,21 +33,22 @@ const CreateQuestion = ({ options, questions }) => {
   useEffect(() => {
     form.resetFields();
     setRightAnswer(0);
-    setSelectedQuestions([])
-    setImg('');
-    setOptionId('')
+    setSelectedQuestions([]);
+    setImg("");
+    setOptionId("");
   }, [isModalVisible]);
 
   const saveData = async (e) => {
-    console.log(e)
-    if(!optionId){
+
+    if (!optionId) {
       notification.error({
-        message: "OptionId is required"
-      })
+        message: "OptionId is required",
+      });
+      return
     }
 
     const data = {
-      question: e.question,
+      title: e.title,
       image: img,
       answers: selectedQuestions,
       //pars number
@@ -50,9 +56,9 @@ const CreateQuestion = ({ options, questions }) => {
       optionId,
     };
 
-    const optionUrl = `${clientApi}question/create`;
+    const questionsUrl = `${clientApi}question/create`;
 
-    const questions = await fetch(optionUrl, {
+    const questions = await fetch(questionsUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,6 +69,7 @@ const CreateQuestion = ({ options, questions }) => {
     console.log(questions, "questions");
 
     setIsModalVisible(false);
+    setQuestionsData([...questionsData, questions])
   };
 
   useEffect(() => {
@@ -76,14 +83,21 @@ const CreateQuestion = ({ options, questions }) => {
     setOptionItems(optionItems);
   }, [options]);
 
-  function onChange(value) {
+  const onChange = (value) => {
     setOptionId(value);
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <h2>Create question</h2>
-      <CreateItem onClick={onClick} />
+      <h2>Create Question</h2>
+      <div className={styles.containerItems}>
+        <CreateItem onClick={onClick} />
+        <QuestionItems
+          questionData={questionsData}
+          setQuestionData={setQuestionsData}
+          setIsModalVisible={setIsModalVisible}
+        />
+      </div>
       <Modal
         footer={null}
         title={<h2 className={styles.title}>Create question</h2>}
@@ -107,7 +121,7 @@ const CreateQuestion = ({ options, questions }) => {
           >
             <h3>Question</h3>
             <Form.Item
-              name="question"
+              name="title"
               rules={[
                 {
                   required: true,
