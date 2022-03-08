@@ -1,11 +1,11 @@
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import {notification, Upload } from "antd";
+import { notification, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { firebaseRequest } from "../../utils/firebase";
 
-const UploadImage = ({ onLoad }) => {
+const UploadImage = ({ image, setImg, onLoad }) => {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
 
@@ -13,6 +13,18 @@ const UploadImage = ({ onLoad }) => {
     setFileList(info.fileList);
     setLoading(false);
   };
+
+  useEffect(() => {
+    const newImg = [
+      {
+        uid: "-1",
+        url: image,
+        status: "done",
+      },
+    ];
+
+    setFileList(newImg);
+  }, [image]);
 
   const beforeUpload = async (file) => {
     const isJpgOrPng =
@@ -42,14 +54,14 @@ const UploadImage = ({ onLoad }) => {
   };
 
   const handlePreview = () => {
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const uploadButton = (
     <div className={styles.uploadContent}>
       <p> Support PDF, JPG, JPEG, PNG</p>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div >Upload photo</div>
+      <div>Upload photo</div>
     </div>
   );
 
@@ -62,6 +74,7 @@ const UploadImage = ({ onLoad }) => {
         beforeUpload={beforeUpload}
         onChange={handleChange}
         onPreview={handlePreview}
+        onRemove={() => setImg("")}
       >
         {fileList.length < 1 && uploadButton}
       </Upload>
@@ -71,6 +84,12 @@ const UploadImage = ({ onLoad }) => {
 
 UploadImage.propTypes = {
   onLoad: PropTypes.func.isRequired,
+  setImg: PropTypes.func.isRequired,
+  image: PropTypes.string,
+};
+
+UploadImage.defaultProps = {
+  image: "",
 };
 
 export default UploadImage;

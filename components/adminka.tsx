@@ -1,8 +1,9 @@
-import CreateOption from "../common/createOption";
-import CreateOptionItems from "../common/createOptionItems";
-import CreateQuestions from "../common/createQuestion";
+import CreateOption from "../common/option_";
+import CreateOptionItems from "../common/optionItems_";
+import CreateQuestions from "../common/question_";
 import PropTypes from "prop-types";
 import CommonLayout from "../common/commonLayout";
+import { useEffect, useState } from "react";
 interface props {
   options: Array<Object>;
   questions: Array<Object>;
@@ -10,11 +11,20 @@ interface props {
 }
 
 const Adminka = ({ options, optionItems, questions }: props) => {
+  const [optionsItems, setOptionsItems] = useState(options);
+  
+  useEffect(() => {
+    setOptionsItems(options);
+  }, [options]);
+
   return (
     <CommonLayout>
-      <CreateOption options={options} />
-      <CreateOptionItems itemsData={optionItems} options={options} />
-      <CreateQuestions options={options} questions={questions} />
+      <CreateOption
+        optionsItems={optionsItems}
+        setOptionsItems={setOptionsItems}
+      />
+      <CreateOptionItems itemsData={optionItems} options={optionsItems} />
+      <CreateQuestions options={optionsItems} questions={questions} />
     </CommonLayout>
   );
 };

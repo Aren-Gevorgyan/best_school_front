@@ -6,54 +6,68 @@ import { Modal, Form, Select, notification } from "antd";
 import SvgClose from "../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
 import UploadImage from "../upload";
-import SelectQuestions from "./selectQuestion";
+import SelectQuestions from "./selectAnswers";
 import { clientApi } from "../../api/client";
-import QuestionItems from './questionItems';
+import QuestionItems from "./questionItems";
 
 const { Option } = Select;
 
 const CreateQuestion = ({ options, questions }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [img, setImg] = useState("");
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [rightAnswer, setRightAnswer] = useState(0);
   const [optionItems, setOptionItems] = useState([]);
-  const [optionId, setOptionId] = useState("");
+  const [editQuestion, setEditQuestion] = useState(false);
+  const [editQuestionIndex, setEditQuestionIndex] = useState(0);
   const [questionsData, setQuestionsData] = useState(questions);
   const [form] = Form.useForm();
 
-  useEffect(()=>{
-    setQuestionsData(questions)
-  }, [questions])
+  useEffect(() => {
+    setQuestionsData(questions);
+  }, [questions]);
+
+  useEffect(() => {
+    const currentData = questionsData[editQuestionIndex];
+
+    form.setFieldsValue({
+      title: currentData?.title,
+      chooseQuestion: currentData?.optionId,
+    });
+    setImg(currentData?.image);
+    setRightAnswer(currentData?.rightAnswer);
+    setSelectedAnswers(currentData?.answers);
+    
+  }, [editQuestion]);
 
   const onClick = () => {
     setIsModalVisible(true);
   };
 
   useEffect(() => {
-    form.resetFields();
-    setRightAnswer(0);
-    setSelectedQuestions([]);
-    setImg("");
-    setOptionId("");
+    if (!isModalVisible) {
+      form.resetFields();
+      setRightAnswer(0);
+      setSelectedAnswers([]);
+      setImg("");
+    }
   }, [isModalVisible]);
 
   const saveData = async (e) => {
-
-    if (!optionId) {
+    if (!e.chooseQuestion) {
       notification.error({
         message: "OptionId is required",
       });
-      return
+      return;
     }
 
     const data = {
       title: e.title,
       image: img,
-      answers: selectedQuestions,
+      answers: selectedAnswers,
       //pars number
       rightAnswer: +rightAnswer,
-      optionId,
+      optionId: e.chooseQuestion,
     };
 
     const questionsUrl = `${clientApi}question/create`;
@@ -66,10 +80,8 @@ const CreateQuestion = ({ options, questions }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    console.log(questions, "questions");
-
     setIsModalVisible(false);
-    setQuestionsData([...questionsData, questions])
+    setQuestionsData([...questionsData, questions]);
   };
 
   useEffect(() => {
@@ -83,8 +95,33 @@ const CreateQuestion = ({ options, questions }) => {
     setOptionItems(optionItems);
   }, [options]);
 
-  const onChange = (value) => {
-    setOptionId(value);
+  const questionItemEdit = async (e, id) => {
+    const optionItemUrl = `${clientApi}question/${id}`;
+
+    const data = {
+      title: e.title,
+      optionId: e.chooseOption,
+      answers: selectedAnswers,
+      //pars number
+      rightAnswer: +rightAnswer,
+      image: img,
+    };
+
+    const questionItem = await fetch(optionItemUrl, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8", // Indicates the content
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+
+    const newQuestionItem = questionsData.map((val, i) => {
+      return val._id === questionItem._id ? questionItem : val;
+    });
+
+    setIsModalVisible(false);
+    setEditQuestion(false);
+    setQuestionsData(newQuestionItem);
   };
 
   return (
@@ -96,11 +133,17 @@ const CreateQuestion = ({ options, questions }) => {
           questionData={questionsData}
           setQuestionData={setQuestionsData}
           setIsModalVisible={setIsModalVisible}
+          setEditQuestion={setEditQuestion}
+          setEditQuestionIndex={setEditQuestionIndex}
         />
       </div>
       <Modal
         footer={null}
-        title={<h2 className={styles.title}>Create question</h2>}
+        title={
+          <h2 className={styles.title}>
+            {editQuestion ? "Edit" : "Create"} question
+          </h2>
+        }
         className={styles.modal}
         visible={isModalVisible}
         closeIcon={
@@ -110,13 +153,18 @@ const CreateQuestion = ({ options, questions }) => {
         }
         onCancel={() => {
           setIsModalVisible(false);
+          setEditQuestion(false);
         }}
       >
         <div className={styles.contentModal}>
           <Form
             form={form}
             onFinish={(e) => {
-              saveData(e);
+              if (editQuestion) {
+                questionItemEdit(e, questionsData[editQuestionIndex]._id);
+              } else {
+                saveData(e);
+              }
             }}
           >
             <h3>Question</h3>
@@ -137,10 +185,10 @@ const CreateQuestion = ({ options, questions }) => {
                 maxLength={200}
               />
             </Form.Item>
-            <h3>Question</h3>
+            <h3>Answers</h3>
             <SelectQuestions
-              selectedQuestions={selectedQuestions}
-              setSelectedQuestions={setSelectedQuestions}
+              selectedAnswers={selectedAnswers}
+              setSelectedAnswers={setSelectedAnswers}
               rightAnswer={rightAnswer}
               setRightAnswer={setRightAnswer}
             />
@@ -151,7 +199,6 @@ const CreateQuestion = ({ options, questions }) => {
                 showSearch
                 placeholder="Select a person"
                 optionFilterProp="children"
-                onChange={onChange}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
@@ -162,6 +209,8 @@ const CreateQuestion = ({ options, questions }) => {
             </Form.Item>
             <h3>Question photo</h3>
             <UploadImage
+              image={img}
+              setImg={setImg}
               onLoad={(e) => {
                 setImg(e);
               }}
@@ -171,6 +220,7 @@ const CreateQuestion = ({ options, questions }) => {
                 className={styles.cancelButton}
                 onClick={() => {
                   setIsModalVisible(false);
+                  setEditQuestion(false);
                 }}
               >
                 Cancel

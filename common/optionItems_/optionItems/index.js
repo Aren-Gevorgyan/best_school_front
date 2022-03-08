@@ -4,7 +4,13 @@ import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 import { clientApi } from "../../../api/client";
 
-const OptionItems = ({ itemsData, setItemsData, setIsModalVisible }) => {
+const OptionItems = ({
+  itemsData,
+  setItemsData,
+  setIsModalVisible,
+  setEditOptionItem,
+  setEditItemIndex,
+}) => {
   const [items, setItems] = useState();
 
   const deleteOption = async (id) => {
@@ -16,22 +22,8 @@ const OptionItems = ({ itemsData, setItemsData, setIsModalVisible }) => {
         "Content-type": "application/json; charset=UTF-8", // Indicates the content
       },
     }).then((res) => res.json());
-    
-    const newOption = itemsData.filter(val => val._id !== option._id);
-    setItemsData(newOption);
-  };
 
-  const editOption = async (id) => {
-    const optionUrl = `${clientApi}option-items/${id}`;
-
-    const option = await fetch(optionUrl, {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8", // Indicates the content
-      },
-    }).then((res) => res.json());
-    
-    const newOption = itemsData.filter(val => val._id !== option._id);
+    const newOption = itemsData.filter((val) => val._id !== option._id);
     setItemsData(newOption);
   };
 
@@ -48,9 +40,15 @@ const OptionItems = ({ itemsData, setItemsData, setIsModalVisible }) => {
                 deleteOption(value._id);
               }}
             ></i>
-            <i className="far fa-edit" title="Edit" onClick={() => {
-              setIsModalVisible(true)
-              }}></i>
+            <i
+              className="far fa-edit"
+              title="Edit"
+              onClick={() => {
+                setIsModalVisible(true);
+                setEditOptionItem(true);
+                setEditItemIndex(index)
+              }}
+            ></i>
           </div>
           <div className={styles.imageContainer}>
             <Image
@@ -59,7 +57,7 @@ const OptionItems = ({ itemsData, setItemsData, setIsModalVisible }) => {
             />
           </div>
         </div>
-      )
+      );
     });
 
     setItems(items);
@@ -70,8 +68,14 @@ const OptionItems = ({ itemsData, setItemsData, setIsModalVisible }) => {
 
 OptionItems.propTypes = {
   itemsData: PropTypes.array.isRequired,
-  setItems: PropTypes.func.isRequired,
+  setItems: PropTypes.func,
   setIsModalVisible: PropTypes.func.isRequired,
+  setEditItemIndex: PropTypes.func.isRequired,
+  setEditOptionItem: PropTypes.func.isRequired,
 };
+
+OptionItems.defaultProps = {
+  setItems: ()=>{}
+}
 
 export default OptionItems;

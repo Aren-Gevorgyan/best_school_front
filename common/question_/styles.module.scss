@@ -1,11 +1,14 @@
 @import "../../styles/variables.module.scss";
 
 .modal {
-  min-width: 620px;
   width: 95%;
+  top: 0;
   & > div {
     padding: 20px;
     border-radius: 10px;
+    @include media-sm{
+      padding: 0;
+    }
   }
   .close {
     width: 40px;
@@ -26,6 +29,7 @@
   .title {
     font-weight: bold;
     color: $black;
+    font-size: clamp(16px, 1.5vw, 20px);
   }
   h3 {
     font-weight: bold;
@@ -85,4 +89,7 @@
 .containerItems {
   display: flex;
   margin-bottom: 20px;
+  @include media-md{
+    display: inherit;
+  }
 }
