@@ -1,7 +1,14 @@
+
+
+@import '../../styles/variables.module.scss';
+
 .content {
   margin: 0 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  @include media-md{
+    flex-direction: initial;
+  }
 }

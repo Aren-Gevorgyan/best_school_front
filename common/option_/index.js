@@ -11,34 +11,33 @@ import { clientApi } from "../../api/client";
 import Option from "./option";
 import Head from "next/head";
 
-const CreateOption = ({ options }) => {
+const CreateOption = ({optionsItems, setOptionsItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [loadingImg, setLoadingImg] = useState(false);
-  const [optionsItems, setOptionsItems] = useState(options);
+  const [optionEdit, setOptionEdit] = useState(false);
+  const [editItemIndex, setEditItemIndex] = useState(0);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    const currentData = optionsItems[editItemIndex];
+    form.setFieldsValue({
+      title: currentData.title,
+    });
+  }, [optionEdit]);
 
   const onClick = () => {
     setIsModalVisible(true);
   };
 
   useEffect(() => {
-    setOptionsItems(options);
-  }, [options]);
-
-  useEffect(() => {
     !isModalVisible && form.resetFields();
   }, [isModalVisible]);
 
   const saveData = async (e) => {
-    if (loadingImg) return;
-
     const data = {
-      title: e.optionTitle,
+      title: e.title,
     };
 
     const optionUrl = `${clientApi}option/create`;
-
-    setLoadingImg(true);
 
     const option = await fetch(optionUrl, {
       method: "POST",
@@ -48,10 +47,33 @@ const CreateOption = ({ options }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    setLoadingImg(false);
     setIsModalVisible(false);
 
     setOptionsItems([...optionsItems, option]);
+  };
+
+  const editOption = async (e, id) => {
+    const optionUrl = `${clientApi}option/${id}`;
+
+    const data = {
+      title: e.title,
+    };
+
+    const option = await fetch(optionUrl, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8", // Indicates the content
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+
+    const newOption = optionsItems.map((val, i) => {
+      return val._id === option._id ? option : val;
+    });
+    
+    setIsModalVisible(false);
+    setOptionsItems(newOption);
+    setOptionEdit(false);
   };
 
   return (
@@ -77,12 +99,18 @@ const CreateOption = ({ options }) => {
             options={optionsItems}
             setOptionsItems={setOptionsItems}
             setIsModalVisible={setIsModalVisible}
+            setOptionEdit={setOptionEdit}
+            setEditItemIndex={setEditItemIndex}
           />
         </div>
 
         <Modal
           footer={null}
-          title={<h2 className={styles.title}>Create option</h2>}
+          title={
+            <h2 className={styles.title}>
+              {optionEdit ? "Edit option" : "Create option"}
+            </h2>
+          }
           className={styles.modal}
           visible={isModalVisible}
           closeIcon={
@@ -92,18 +120,23 @@ const CreateOption = ({ options }) => {
           }
           onCancel={() => {
             setIsModalVisible(false);
+            setOptionEdit(false);
           }}
         >
           <div className={styles.contentModal}>
             <Form
               form={form}
               onFinish={(e) => {
-                saveData(e);
+                if (optionEdit) {
+                  editOption(e, optionsItems[editItemIndex]._id);
+                } else {
+                  saveData(e);
+                }
               }}
             >
               <h3>Option title</h3>
               <Form.Item
-                name="optionTitle"
+                name="title"
                 rules={[
                   {
                     required: true,
@@ -124,6 +157,7 @@ const CreateOption = ({ options }) => {
                   className={styles.cancelButton}
                   onClick={() => {
                     setIsModalVisible(false);
+                    setEditQuestion(false);
                   }}
                 >
                   Cancel
@@ -142,11 +176,12 @@ const CreateOption = ({ options }) => {
 };
 
 CreateOption.propTypes = {
-  options: PropTypes.array,
+  optionsItems: PropTypes.array,
+  setOptionsItems: PropTypes.func.isRequired,
 };
 
 CreateOption.defaultProps = {
-  options: [],
+  optionsItems: [],
 };
 
 export default CreateOption;

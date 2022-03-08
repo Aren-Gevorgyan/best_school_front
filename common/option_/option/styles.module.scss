@@ -3,6 +3,9 @@
 .container {
   display: flex;
   overflow-x: auto;
+  @include media-md{
+    display: inherit; 
+  }
   .containerItems {
     max-width: 250px;
     max-height: 280px;
@@ -15,39 +18,34 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @include media-md{
+      margin-top: 10px;
+    }
     h2 {
       width: 100%;
       font-weight: bold;
       overflow: hidden;
+      word-break: break-all;
+      height: calc(100% - 59px);
       font-size: clamp(16px, 1.6vw, 20px);
     }
-    .settings{
+    .settings {
+      display: flex;
+      justify-content: center;
+      & > i {
+        width: 25px;
+        height: 25px;
+        margin: 5px;
         display: flex;
         justify-content: center;
-        & > i {
-          width: 25px;
-          height: 25px;
-          margin: 5px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border: 1px solid #001529;
-          border-radius: 50%;
-          cursor: pointer;
-          &:hover{
-            background-color: #001529;
-            color: white;
-          }
+        align-items: center;
+        border: 1px solid #001529;
+        border-radius: 50%;
+        cursor: pointer;
+        &:hover {
+          background-color: #001529;
+          color: white;
         }
-    }
-    .imageContainer {
-      position: relative;
-      width: 100%;
-      height: 150px;
-      overflow: hidden;
-      border-radius: 5px;
-      img {
-        object-fit: cover;
       }
     }
   }

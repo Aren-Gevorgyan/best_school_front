@@ -18,8 +18,9 @@ const CreateOptionItems = ({ itemsData, options }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [img, setImg] = useState("");
   const [loadingImg, setLoadingImg] = useState(false);
-  const [optionId, setOptionId] = useState("");
-  const [optionItems, setOptionItems] = useState([]);
+  const [optionItems, setOptionItems] = useState(options);
+  const [editOptionItem, setEditOptionItem] = useState(false);
+  const [editItemIndex, setEditItemIndex] = useState(0);
   const [items, setItems] = useState(itemsData);
   const [form] = Form.useForm();
 
@@ -28,21 +29,32 @@ const CreateOptionItems = ({ itemsData, options }) => {
   };
 
   useEffect(() => {
+    const currentData = items[editItemIndex];
+    form.setFieldsValue({
+      title: currentData.title,
+      chooseOption: currentData.optionId,
+    });
+    setImg(currentData.image);
+  }, [editOptionItem]);
+
+  useEffect(() => {
     setItems(itemsData);
   }, [itemsData]);
 
   useEffect(() => {
-    !isModalVisible && form.resetFields();
-    setImg("");
+    if (!isModalVisible) {
+      form.resetFields();
+      setImg("");
+    }
   }, [isModalVisible]);
 
   const saveData = async (e) => {
     if (loadingImg) return;
 
     const data = {
-      title: e.optionTitle,
+      title: e.title,
       image: img,
-      optionId
+      optionId: e.chooseOption,
     };
 
     const optionUrl = `${clientApi}option-items/create`;
@@ -74,10 +86,32 @@ const CreateOptionItems = ({ itemsData, options }) => {
     setOptionItems(optionsData);
   }, [options]);
 
-  const onChange = (value) => {
-    setOptionId(value);
-  }
-  console.log(items, 'items')
+  const optionItemEdit = async (e, id) => {
+    const optionItemUrl = `${clientApi}option-items/${id}`;
+
+    const data = {
+      title: e.title,
+      optionId: e.chooseOption,
+      image: img,
+    };
+
+    const optionItem = await fetch(optionItemUrl, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8", // Indicates the content
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+
+    const newOptionItem = items.map((val, i) => {
+      return val._id === optionItem._id ? optionItem : val;
+    });
+
+    setIsModalVisible(false);
+    setEditOptionItem(false);
+    setItems(newOptionItem);
+  };
+
   return (
     <>
       <Head>
@@ -101,12 +135,18 @@ const CreateOptionItems = ({ itemsData, options }) => {
             itemsData={items}
             setItemsData={setItems}
             setIsModalVisible={setIsModalVisible}
+            setEditOptionItem={setEditOptionItem}
+            setEditItemIndex={setEditItemIndex}
           />
         </div>
 
         <Modal
           footer={null}
-          title={<h2 className={styles.title}>Create option item</h2>}
+          title={
+            <h2 className={styles.title}>
+              {editOptionItem ? "Edit" : "Create"} option item
+            </h2>
+          }
           className={styles.modal}
           visible={isModalVisible}
           closeIcon={
@@ -116,18 +156,23 @@ const CreateOptionItems = ({ itemsData, options }) => {
           }
           onCancel={() => {
             setIsModalVisible(false);
+            setEditOptionItem(false);
           }}
         >
           <div className={styles.contentModal}>
             <Form
               form={form}
               onFinish={(e) => {
-                saveData(e);
+                if (editOptionItem) {
+                  optionItemEdit(e, items[editItemIndex]._id);
+                } else {
+                  saveData(e);
+                }
               }}
             >
               <h3>Option item title</h3>
               <Form.Item
-                name="optionTitle"
+                name="title"
                 rules={[
                   {
                     required: true,
@@ -139,18 +184,17 @@ const CreateOptionItems = ({ itemsData, options }) => {
                 <TextArea
                   className={styles.textArea}
                   rows={4}
-                  placeholder="option title"
+                  placeholder="Title"
                   maxLength={200}
                 />
               </Form.Item>
               <h3>Choose Question</h3>
-              <Form.Item name="chooseQuestion">
+              <Form.Item name="chooseOption">
                 <Select
                   className={styles.questionItem}
                   showSearch
                   placeholder="Select a person"
                   optionFilterProp="children"
-                  onChange={onChange}
                   filterOption={(input, option) =>
                     option.children
                       .toLowerCase()
@@ -162,6 +206,8 @@ const CreateOptionItems = ({ itemsData, options }) => {
               </Form.Item>
               <h3>Option Item photo</h3>
               <UploadImage
+                image={img}
+                setImg={setImg}
                 onLoad={(e) => {
                   setImg(e);
                 }}
@@ -171,6 +217,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
                   className={styles.cancelButton}
                   onClick={() => {
                     setIsModalVisible(false);
+                    setEditQuestion(false);
                   }}
                 >
                   Cancel

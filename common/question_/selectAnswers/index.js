@@ -8,9 +8,9 @@ import PropTypes from "prop-types";
 
 import styles from "./styles.module.scss";
 
-const SelectQuestions = ({
-  selectedQuestions,
-  setSelectedQuestions,
+const SelectAnswers = ({
+  selectedAnswers,
+  setSelectedAnswers,
   rightAnswer,
   setRightAnswer,
 }) => {
@@ -18,10 +18,10 @@ const SelectQuestions = ({
   const [inputValue, setInputValue] = useState("");
 
   const handleClose = (removedQuestions) => {
-    const currentQuestions = selectedQuestions.filter(
+    const currentQuestions = selectedAnswers.filter(
       (questions) => questions !== removedQuestions
     );
-    setSelectedQuestions(currentQuestions);
+    setSelectedAnswers(currentQuestions);
   };
 
   const handleInputChange = (e) => {
@@ -33,10 +33,10 @@ const SelectQuestions = ({
     if(!value.trim().length) return;
     
     const valueExist = value.trim().length !== 1;
-    if (valueExist && selectedQuestions.indexOf(value) === -1) {
-      selectedQuestions = [...selectedQuestions, value];
+    if (valueExist && selectedAnswers.indexOf(value) === -1) {
+      selectedAnswers = [...selectedAnswers, value];
     }
-    setSelectedQuestions(selectedQuestions);
+    setSelectedAnswers(selectedAnswers);
     setInputVisible(false);
     setInputValue("");
   };
@@ -65,17 +65,16 @@ const SelectQuestions = ({
           value={index}
           onClick={(e) => {
             setRightAnswer(e.target.value);
-            console.log(e.target.value, "eee");
           }}
         />
       </div>
     );
   };
 
-  const questionsChild = selectedQuestions.map(forMap);
+  const questionsChild = selectedAnswers.map(forMap);
 
   return (
-    <div className={styles.containerSelectedQuestions}>
+    <div className={styles.containerselectedAnswers}>
       <div>{questionsChild}</div>
       {inputVisible && (
         <Input
@@ -98,11 +97,11 @@ const SelectQuestions = ({
   );
 };
 
-SelectQuestions.propTypes = {
-  selectedQuestions: PropTypes.array.isRequired,
-  setSelectedQuestions: PropTypes.func.isRequired,
+SelectAnswers.propTypes = {
+  selectedAnswers: PropTypes.array.isRequired,
+  setSelectedAnswers: PropTypes.func.isRequired,
   rightAnswer: PropTypes.number.isRequired,
   setRightAnswer: PropTypes.func.isRequired,
 };
 
-export default SelectQuestions;
+export default SelectAnswers;
