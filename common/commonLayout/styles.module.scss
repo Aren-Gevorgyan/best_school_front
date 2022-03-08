@@ -10,5 +10,7 @@
   justify-content: space-around;
   @include media-md{
     flex-direction: initial;
+    justify-content: initial;
+    overflow: scroll;
   }
 }

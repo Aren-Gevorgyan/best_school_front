@@ -11,6 +11,12 @@
   justify-content: center;
   align-items: center;
   margin-right: 40px;
+  @include media-md{
+    min-width: 200px;
+    min-height: 230px;
+    width: 200px;
+    height: 230px;
+  }
   & > span {
     width: 40px;
     height: 40px;
