@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import SvgPlus from "../svgIcons/Plus";
+import SvgPlus from "../../svgIcons/Plus";
 
 const CreateItem = ({ onClick }) => {
   return (

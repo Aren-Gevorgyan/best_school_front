@@ -2,7 +2,7 @@ import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import { clientApi } from "../../../api/client";
+import { clientApi } from "../../../../api/client";
 
 const Option = ({ options, setOptionsItems, setIsModalVisible, setOptionEdit, setEditItemIndex }) => {
   const [optionsItems, setItems] = useState();

@@ -4,64 +4,42 @@ import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 import CreateItem from "../createItem";
 import { useEffect, useState } from "react";
-import { Form, Modal, Select } from "antd";
-import SvgClose from "../svgIcons/Close";
+import { Form, Modal } from "antd";
+import SvgClose from "../../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
-import { clientApi } from "../../api/client";
-import UploadImage from "../upload";
+import { clientApi } from "../../../api/client";
+import Option from "./option";
 import Head from "next/head";
-import OptionItems from "./optionItems";
 
-const { Option } = Select;
-
-const CreateOptionItems = ({ itemsData, options }) => {
+const CreateOption = ({optionsItems, setOptionsItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [img, setImg] = useState("");
-  const [loadingImg, setLoadingImg] = useState(false);
-  const [optionItems, setOptionItems] = useState(options);
-  const [editOptionItem, setEditOptionItem] = useState(false);
+  const [optionEdit, setOptionEdit] = useState(false);
   const [editItemIndex, setEditItemIndex] = useState(0);
-  const [items, setItems] = useState(itemsData);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    const currentData = optionsItems[editItemIndex];
+    form.setFieldsValue({
+      title: currentData.title,
+    });
+  }, [optionEdit]);
 
   const onClick = () => {
     setIsModalVisible(true);
   };
 
   useEffect(() => {
-    const currentData = items[editItemIndex];
-    form.setFieldsValue({
-      title: currentData.title,
-      chooseOption: currentData.optionId,
-    });
-    setImg(currentData.image);
-  }, [editOptionItem]);
-
-  useEffect(() => {
-    setItems(itemsData);
-  }, [itemsData]);
-
-  useEffect(() => {
-    if (!isModalVisible) {
-      form.resetFields();
-      setImg("");
-    }
+    !isModalVisible && form.resetFields();
   }, [isModalVisible]);
 
   const saveData = async (e) => {
-    if (loadingImg) return;
-
     const data = {
       title: e.title,
-      image: img,
-      optionId: e.chooseOption,
     };
 
-    const optionUrl = `${clientApi}option-items/create`;
+    const optionUrl = `${clientApi}option/create`;
 
-    setLoadingImg(true);
-
-    const item = await fetch(optionUrl, {
+    const option = await fetch(optionUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,33 +47,19 @@ const CreateOptionItems = ({ itemsData, options }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    setLoadingImg(false);
     setIsModalVisible(false);
 
-    setItems([...items, item]);
+    setOptionsItems([...optionsItems, option]);
   };
 
-  useEffect(() => {
-    const optionsData = options?.map((value, index) => {
-      return (
-        <Option key={value._id + index} value={value._id}>
-          {value.title}
-        </Option>
-      );
-    });
-    setOptionItems(optionsData);
-  }, [options]);
-
-  const optionItemEdit = async (e, id) => {
-    const optionItemUrl = `${clientApi}option-items/${id}`;
+  const editOption = async (e, id) => {
+    const optionUrl = `${clientApi}option/${id}`;
 
     const data = {
       title: e.title,
-      optionId: e.chooseOption,
-      image: img,
     };
 
-    const optionItem = await fetch(optionItemUrl, {
+    const option = await fetch(optionUrl, {
       method: "PUT",
       headers: {
         "Content-type": "application/json; charset=UTF-8", // Indicates the content
@@ -103,13 +67,17 @@ const CreateOptionItems = ({ itemsData, options }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    const newOptionItem = items.map((val, i) => {
-      return val._id === optionItem._id ? optionItem : val;
+    console.log(option, 'option')
+
+    const newOption = optionsItems.map((val, i) => {
+      return val._id === option._id ? option : val;
     });
 
+    console.log(newOption, 'newOption')
+    
     setIsModalVisible(false);
-    setEditOptionItem(false);
-    setItems(newOptionItem);
+    setOptionsItems(newOption);
+    setOptionEdit(false);
   };
 
   return (
@@ -127,15 +95,15 @@ const CreateOptionItems = ({ itemsData, options }) => {
         />
       </Head>
       <div className={styles.container}>
-        <h2>Create Option Item</h2>
+        <h2>Create Option</h2>
 
         <div className={styles.containerItems}>
           <CreateItem onClick={onClick} />
-          <OptionItems
-            itemsData={items}
-            setItemsData={setItems}
+          <Option
+            options={optionsItems}
+            setOptionsItems={setOptionsItems}
             setIsModalVisible={setIsModalVisible}
-            setEditOptionItem={setEditOptionItem}
+            setOptionEdit={setOptionEdit}
             setEditItemIndex={setEditItemIndex}
           />
         </div>
@@ -144,7 +112,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
           footer={null}
           title={
             <h2 className={styles.title}>
-              {editOptionItem ? "Edit" : "Create"} option item
+              {optionEdit ? "Edit option" : "Create option"}
             </h2>
           }
           className={styles.modal}
@@ -156,21 +124,21 @@ const CreateOptionItems = ({ itemsData, options }) => {
           }
           onCancel={() => {
             setIsModalVisible(false);
-            setEditOptionItem(false);
+            setOptionEdit(false);
           }}
         >
           <div className={styles.contentModal}>
             <Form
               form={form}
               onFinish={(e) => {
-                if (editOptionItem) {
-                  optionItemEdit(e, items[editItemIndex]._id);
+                if (optionEdit) {
+                  editOption(e, optionsItems[editItemIndex]._id);
                 } else {
                   saveData(e);
                 }
               }}
             >
-              <h3>Option item title</h3>
+              <h3>Option title</h3>
               <Form.Item
                 name="title"
                 rules={[
@@ -184,34 +152,10 @@ const CreateOptionItems = ({ itemsData, options }) => {
                 <TextArea
                   className={styles.textArea}
                   rows={4}
-                  placeholder="Title"
+                  placeholder="option title"
                   maxLength={200}
                 />
               </Form.Item>
-              <h3>Choose Question</h3>
-              <Form.Item name="chooseOption">
-                <Select
-                  className={styles.questionItem}
-                  showSearch
-                  placeholder="Select a person"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {optionItems}
-                </Select>
-              </Form.Item>
-              <h3>Option Item photo</h3>
-              <UploadImage
-                image={img}
-                setImg={setImg}
-                onLoad={(e) => {
-                  setImg(e);
-                }}
-              />
               <div className={styles.buttonsContainer}>
                 <button
                   className={styles.cancelButton}
@@ -235,14 +179,13 @@ const CreateOptionItems = ({ itemsData, options }) => {
   );
 };
 
-CreateOptionItems.propTypes = {
-  items: PropTypes.array,
-  options: PropTypes.array,
+CreateOption.propTypes = {
+  optionsItems: PropTypes.array,
+  setOptionsItems: PropTypes.func.isRequired,
 };
 
-CreateOptionItems.defaultProps = {
-  items: [],
-  options: [],
+CreateOption.defaultProps = {
+  optionsItems: [],
 };
 
-export default CreateOptionItems;
+export default CreateOption;

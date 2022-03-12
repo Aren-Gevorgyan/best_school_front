@@ -11,7 +11,7 @@ const Home = ({ options }: options) => {
     useEffect(() => {
         const items: any = options.map((val: any, index: number) => {
 
-            return <div key={val._id + index}>{val.title}</div>
+            return <div key={val._id + index}>{val?.title}</div>
         })
 
         setOptionsItem(items);
@@ -20,7 +20,7 @@ const Home = ({ options }: options) => {
 
     return (
         <CommonLayout>
-            <div>{optionsItem}</div>
+            {optionsItem}
         </CommonLayout>
     )
 }
