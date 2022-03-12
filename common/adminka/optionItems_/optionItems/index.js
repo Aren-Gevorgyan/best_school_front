@@ -2,47 +2,42 @@ import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
-import { clientApi } from "../../../api/client";
+import { clientApi } from "../../../../api/client";
 
-const QuestionItems = ({
-  questionData,
-  setQuestionData,
+const OptionItems = ({
+  itemsData,
+  setItemsData,
   setIsModalVisible,
-  setEditQuestion,
-  setEditQuestionIndex,
+  setEditOptionItem,
+  setEditItemIndex,
 }) => {
-  const [question, setQuestion] = useState();
+  const [items, setItems] = useState();
 
-  const deleteQuestion = async (id) => {
-    const questionUrl = `${clientApi}question/${id}`;
+  const deleteOption = async (id) => {
+    const optionUrl = `${clientApi}option-items/${id}`;
 
-    const question = await fetch(questionUrl, {
+    const option = await fetch(optionUrl, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json; charset=UTF-8", // Indicates the content
       },
     }).then((res) => res.json());
 
-    const newQuestion = questionData.filter((val) => val._id !== question._id);
-    setQuestionData(newQuestion);
+    const newOption = itemsData.filter((val) => val._id !== option._id);
+    setItemsData(newOption);
   };
 
   useEffect(() => {
-    const items = questionData?.map((value, index) => {
+    const items = itemsData?.map((value, index) => {
       return (
         <div key={value._id + index} className={styles.containerItems}>
           <h2>{value.title}</h2>
-          {!!value?.answers?.length ? (
-            <p>Answers: {value?.answers?.length}</p>
-          ) : (
-            <p>Answers: &#128530;</p>
-          )}
           <div className={styles.settings}>
             <i
               className="fa fa-trash-o"
               title="Delete"
               onClick={() => {
-                deleteQuestion(value._id);
+                deleteOption(value._id);
               }}
             ></i>
             <i
@@ -50,8 +45,8 @@ const QuestionItems = ({
               title="Edit"
               onClick={() => {
                 setIsModalVisible(true);
-                setEditQuestion(true)
-                setEditQuestionIndex(index);
+                setEditOptionItem(true);
+                setEditItemIndex(index)
               }}
             ></i>
           </div>
@@ -65,23 +60,22 @@ const QuestionItems = ({
       );
     });
 
-    setQuestion(items);
-  }, [questionData]);
+    setItems(items);
+  }, [itemsData]);
 
-  return <div className={styles.container}>{question}</div>;
+  return <div className={styles.container}>{items}</div>;
 };
 
-QuestionItems.propTypes = {
-  itemsData: PropTypes.array,
+OptionItems.propTypes = {
+  itemsData: PropTypes.array.isRequired,
   setItems: PropTypes.func,
   setIsModalVisible: PropTypes.func.isRequired,
-  setEditQuestionIndex: PropTypes.func.isRequired,
-  setEditQuestion: PropTypes.func.isRequired,
+  setEditItemIndex: PropTypes.func.isRequired,
+  setEditOptionItem: PropTypes.func.isRequired,
 };
 
-QuestionItems.defaultProps = {
-  setItems: () => {},
-  itemsData: [],
+OptionItems.defaultProps = {
+  setItems: ()=>{}
 }
 
-export default QuestionItems;
+export default OptionItems;

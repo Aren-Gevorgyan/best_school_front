@@ -1,6 +1,6 @@
-import CreateOption from "../common/option_";
-import CreateOptionItems from "../common/optionItems_";
-import CreateQuestions from "../common/question_";
+import CreateOption from "../common/adminka/option_";
+import CreateOptionItems from "../common/adminka/optionItems_";
+import CreateQuestions from "../common/adminka/question_";
 import PropTypes from "prop-types";
 import CommonLayout from "../common/commonLayout";
 import { useEffect, useState } from "react";

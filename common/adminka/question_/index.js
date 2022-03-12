@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import CreateItem from "../createItem";
 import { useEffect, useState } from "react";
 import { Modal, Form, Select, notification } from "antd";
-import SvgClose from "../svgIcons/Close";
+import SvgClose from "../../svgIcons/Close";
 import TextArea from "antd/lib/input/TextArea";
 import UploadImage from "../upload";
 import SelectQuestions from "./selectAnswers";
-import { clientApi } from "../../api/client";
+import { clientApi } from "../../../api/client";
 import QuestionItems from "./questionItems";
 
 const { Option } = Select;

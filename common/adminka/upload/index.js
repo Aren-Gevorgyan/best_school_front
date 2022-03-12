@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { notification, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { firebaseRequest } from "../../utils/firebase";
+import { firebaseRequest } from "../../../utils/firebase";
 
 const UploadImage = ({ image, setImg, onLoad }) => {
   const [loading, setLoading] = useState(false);
