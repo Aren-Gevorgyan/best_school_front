@@ -34,3 +34,8 @@ a {
 .ant-upload-list-item-actions > a{
   display: none !important;
 }
+
+.ant-menu-dark.ant-menu-horizontal{
+  display: flex;
+  justify-content: flex-end;
+}
