@@ -9,6 +9,8 @@ export async function getServerSideProps(context: Object) {
 
   const options = await fetch(url, { method: "get" }).then(res => res.json());
 
+  console.log(options, 'options');
+
   return {
     props: {
       options

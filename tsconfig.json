@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "common/question_/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "common/question_/index.js", "components/home/index.js", "components/adminka/index.js"],
   "exclude": ["node_modules"]
 }

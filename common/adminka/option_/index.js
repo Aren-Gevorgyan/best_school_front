@@ -11,25 +11,32 @@ import { clientApi } from "../../../api/client";
 import Option from "./option";
 import Head from "next/head";
 
-const CreateOption = ({optionsItems, setOptionsItems }) => {
+const CreateOption = ({ optionsItems, setOptionsItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [optionEdit, setOptionEdit] = useState(false);
   const [editItemIndex, setEditItemIndex] = useState(0);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    const currentData = optionsItems[editItemIndex];
-    form.setFieldsValue({
-      title: currentData.title,
-    });
-  }, [optionEdit]);
+  // useEffect(() => {
+  //   const currentData = optionsItems[editItemIndex];
+  //   form.setFieldsValue({
+  //     title: currentData.title,
+  //   });
+  // }, [optionEdit]);
 
   const onClick = () => {
     setIsModalVisible(true);
   };
 
   useEffect(() => {
-    !isModalVisible && form.resetFields();
+    if (isModalVisible && optionEdit) {
+      const currentData = optionsItems[editItemIndex];
+      form.setFieldsValue({
+        title: currentData.title,
+      });
+    } else {
+      form.resetFields();
+    }
   }, [isModalVisible]);
 
   const saveData = async (e) => {
@@ -67,14 +74,14 @@ const CreateOption = ({optionsItems, setOptionsItems }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    console.log(option, 'option')
+    console.log(option, "option");
 
     const newOption = optionsItems.map((val, i) => {
       return val._id === option._id ? option : val;
     });
 
-    console.log(newOption, 'newOption')
-    
+    console.log(newOption, "newOption");
+
     setIsModalVisible(false);
     setOptionsItems(newOption);
     setOptionEdit(false);
