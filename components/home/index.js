@@ -3,9 +3,17 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Image } from "antd";
+import Router from "next/router";
 
 const Home = ({ options }) => {
   const [optionsItem, setOptionsItem] = useState([]);
+
+  const openQuestion = (id) => {
+    Router.push(`/question/${id}?question=1`, undefined, {
+      shallow: false,
+      scroll: true,
+    });
+  };
 
   useEffect(() => {
     const items = options.map((val, index) => {
@@ -20,6 +28,9 @@ const Home = ({ options }) => {
                 <>
                   {val.items.length > 1 && <span></span>}
                   <div
+                    onClick={() => {
+                      openQuestion(items._id);
+                    }}
                     key={items._id + index}
                     className={styles.itemsContainer}
                   >

@@ -46,7 +46,7 @@ const OptionItems = ({
               onClick={() => {
                 setIsModalVisible(true);
                 setEditOptionItem(true);
-                setEditItemIndex(index)
+                setEditItemIndex(index);
               }}
             ></i>
           </div>
@@ -75,7 +75,7 @@ OptionItems.propTypes = {
 };
 
 OptionItems.defaultProps = {
-  setItems: ()=>{}
-}
+  setItems: () => {},
+};
 
 export default OptionItems;

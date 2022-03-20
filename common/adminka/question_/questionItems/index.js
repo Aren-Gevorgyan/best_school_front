@@ -14,7 +14,7 @@ const QuestionItems = ({
   const [question, setQuestion] = useState();
 
   const deleteQuestion = async (id) => {
-    const questionUrl = `${clientApi}question/${id}`;
+    const questionUrl = `${clientApi}questions/${id}`;
 
     const question = await fetch(questionUrl, {
       method: "DELETE",
@@ -50,7 +50,7 @@ const QuestionItems = ({
               title="Edit"
               onClick={() => {
                 setIsModalVisible(true);
-                setEditQuestion(true)
+                setEditQuestion(true);
                 setEditQuestionIndex(index);
               }}
             ></i>
@@ -82,6 +82,6 @@ QuestionItems.propTypes = {
 QuestionItems.defaultProps = {
   setItems: () => {},
   itemsData: [],
-}
+};
 
 export default QuestionItems;

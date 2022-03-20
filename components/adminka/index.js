@@ -19,7 +19,7 @@ const Adminka = ({ options, optionItems, questions }) => {
         setOptionsItems={setOptionsItems}
       />
       <CreateOptionItems itemsData={optionItems} options={optionsItems} />
-      <CreateQuestions options={optionsItems} questions={questions} />
+      <CreateQuestions optionsItems={optionItems} questions={questions} />
     </CommonLayout>
   );
 };
