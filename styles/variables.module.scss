@@ -26,6 +26,10 @@ $text2: 25px;
 $text3: 20px;
 $text4: 16px;
 $text5: 14px;
+$clamp1: clamp($text5, 3vw, $text2);
+$clamp2: clamp($text5, 2.5vw, $text2);
+$clamp3: clamp($text5, 2vw, $text2);
+$clamp4: clamp($text5, 1.2vw, $text2);
 
 $fontFamilyNatoSans: "Noto Sans";
 $fontFamilyPermanentMarker: "Permanent Marker";
