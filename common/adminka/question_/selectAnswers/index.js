@@ -30,8 +30,8 @@ const SelectAnswers = ({
 
   const handleInputConfirm = (e) => {
     const { value } = e.target;
-    if(!value.trim().length) return;
-    
+    if (!value.trim().length) return;
+
     const valueExist = value.trim().length !== 1;
     if (valueExist && selectedAnswers.indexOf(value) === -1) {
       selectedAnswers = [...selectedAnswers, value];

@@ -185,7 +185,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
                   className={styles.textArea}
                   rows={4}
                   placeholder="Title"
-                  maxLength={200}
+                  maxLength={400}
                 />
               </Form.Item>
               <h3>Choose Question</h3>

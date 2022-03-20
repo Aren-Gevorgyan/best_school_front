@@ -6,7 +6,7 @@
   & > div {
     padding: 20px;
     border-radius: 10px;
-    @include media-sm{
+    @include media-sm {
       padding: 0;
     }
   }
@@ -31,7 +31,8 @@
     color: $black;
     font-size: clamp(16px, 1.5vw, 20px);
   }
-  h3 {
+  h3,
+  h2 {
     font-weight: bold;
   }
   .textArea {
@@ -86,10 +87,34 @@
     }
   }
 }
-.containerItems {
-  display: flex;
-  margin-bottom: 20px;
-  @include media-md{
-    display: inherit;
+.container {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 12px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #001529;
+    border-radius: 20px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1c4d7a;
+    border-radius: 20px;
+  }
+  .containerItems {
+    display: flex;
+    margin-bottom: 20px;
+    @include media-md {
+      display: inherit;
+    }
   }
 }

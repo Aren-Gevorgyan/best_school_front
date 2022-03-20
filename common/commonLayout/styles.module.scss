@@ -1,18 +1,30 @@
-
-
-@import '../../styles/variables.module.scss';
+@import "../../styles/variables.module.scss";
 
 .content {
-  margin: 0 16px;
+  max-width: 1920px;
+  width: 100%;
+  margin: 80px auto 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  @include media-md{
+  @include media-md {
     flex-direction: initial;
     justify-content: initial;
     overflow: scroll;
     padding: 0;
-    margin: 0;
+    margin: 80px 16px;
   }
+}
+.header {
+  width: 100%;
+  position: fixed;
+}
+.router {
+  &:hover {
+    background: #0e375e;
+  }
+}
+.active {
+  background: #0e375e;
 }

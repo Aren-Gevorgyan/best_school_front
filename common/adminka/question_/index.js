@@ -12,7 +12,7 @@ import QuestionItems from "./questionItems";
 
 const { Option } = Select;
 
-const CreateQuestion = ({ options, questions }) => {
+const CreateQuestion = ({ optionsItems, questions }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [img, setImg] = useState("");
   const [selectedAnswers, setSelectedAnswers] = useState([]);
@@ -36,8 +36,7 @@ const CreateQuestion = ({ options, questions }) => {
     });
     setImg(currentData?.image);
     setRightAnswer(currentData?.rightAnswer);
-    setSelectedAnswers(currentData?.answers);
-    
+    setSelectedAnswers(!!currentData?.answers ? currentData?.answers : []);
   }, [editQuestion]);
 
   const onClick = () => {
@@ -70,7 +69,7 @@ const CreateQuestion = ({ options, questions }) => {
       optionId: e.chooseQuestion,
     };
 
-    const questionsUrl = `${clientApi}question/create`;
+    const questionsUrl = `${clientApi}questions/create`;
 
     const questions = await fetch(questionsUrl, {
       method: "POST",
@@ -85,7 +84,7 @@ const CreateQuestion = ({ options, questions }) => {
   };
 
   useEffect(() => {
-    const optionItems = options.map((value, index) => {
+    const optionItems = optionsItems.map((value, index) => {
       return (
         <Option key={value._id + index} value={value._id}>
           {value.title}
@@ -93,10 +92,10 @@ const CreateQuestion = ({ options, questions }) => {
       );
     });
     setOptionItems(optionItems);
-  }, [options]);
+  }, [optionsItems]);
 
   const questionItemEdit = async (e, id) => {
-    const optionItemUrl = `${clientApi}question/${id}`;
+    const optionItemUrl = `${clientApi}questions/${id}`;
 
     const data = {
       title: e.title,
@@ -182,7 +181,7 @@ const CreateQuestion = ({ options, questions }) => {
                 className={styles.textArea}
                 rows={4}
                 placeholder="Question"
-                maxLength={200}
+                maxLength={400}
               />
             </Form.Item>
             <h3>Answers</h3>
@@ -238,12 +237,12 @@ const CreateQuestion = ({ options, questions }) => {
 };
 
 CreateQuestion.propTypes = {
-  options: PropTypes.array,
+  optionsItems: PropTypes.array,
   questions: PropTypes.array,
 };
 
 CreateQuestion.defaultProps = {
-  options: [],
+  optionsItems: [],
   questions: [],
 };
 

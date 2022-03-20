@@ -74,13 +74,9 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    console.log(option, "option");
-
     const newOption = optionsItems.map((val, i) => {
       return val._id === option._id ? option : val;
     });
-
-    console.log(newOption, "newOption");
 
     setIsModalVisible(false);
     setOptionsItems(newOption);
@@ -160,7 +156,7 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
                   className={styles.textArea}
                   rows={4}
                   placeholder="option title"
-                  maxLength={200}
+                  maxLength={400}
                 />
               </Form.Item>
               <div className={styles.buttonsContainer}>

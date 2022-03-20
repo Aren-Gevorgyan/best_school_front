@@ -26,16 +26,18 @@ a {
   border: 1px dashed #212121 !important;
   background-color: white !important;
 }
-
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background-color: #001529 !important;
+}
 .ant-upload-list-picture-card-container {
   border: none !important;
 }
 
-.ant-upload-list-item-actions > a{
+.ant-upload-list-item-actions > a {
   display: none !important;
 }
 
-.ant-menu-dark.ant-menu-horizontal{
+.ant-menu-dark.ant-menu-horizontal {
   display: flex;
   justify-content: flex-end;
 }
