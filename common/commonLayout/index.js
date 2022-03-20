@@ -28,7 +28,7 @@ const CommonLayout = ({ children }) => {
         >
           <Link href={"http://localhost:3000"}>
             <a className={cn(styles.router, asPath === "/" && styles.active)}>
-              <Menu.Item>Home</Menu.Item>
+              <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
             </a>
           </Link>
           <Link href={"http://localhost:3000/adminka"}>
@@ -38,7 +38,7 @@ const CommonLayout = ({ children }) => {
                 asPath === "adminka" && styles.active
               )}
             >
-              <Menu.Item>Adminka</Menu.Item>
+              <Menu.Item>ԱԴՄԻՆ</Menu.Item>
             </a>
           </Link>
         </Menu>

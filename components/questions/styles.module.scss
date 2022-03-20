@@ -1,0 +1,84 @@
+@import "../../styles/variables.module.scss";
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  & > h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: $clamp1;
+    color: $black;
+    word-break: break-all;
+  }
+  .content {
+    padding: 10px;
+    border: 1px solid $gray85;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    .containerImage {
+      height: 300px;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 50px;
+    }
+    h2 {
+      text-align: center;
+      font-size: $clamp1;
+      color: $black;
+      word-break: break-all;
+      margin-bottom: 50px;
+    }
+    .containerAnswers {
+      min-height: 300px;
+      .answers {
+        border: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-all;
+        font-weight: 500;
+        font-size: $clamp2;
+        border-radius: 10px;
+        margin-top: 10px;
+        padding: 5px 0;
+        background-color: #def2eb;
+        cursor: pointer;
+        &:hover {
+          background: #047382;
+          color: white;
+        }
+      }
+    }
+    .right {
+      background-color: #40a509 !important;
+      color: white;
+    }
+    .falseAnswer {
+      background-color: #a90a1f !important;
+      color: white;
+    }
+    .disabled {
+      pointer-events: none;
+    }
+    .containerButton {
+      display: flex;
+      justify-content: center;
+      button {
+        margin: 10px;
+        width: 30%;
+        background: #001529;
+        color: white;
+        border-radius: 10px;
+        font-size: $clamp4;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        &:hover {
+          background: #0e355a;
+        }
+      }
+    }
+  }
+}
