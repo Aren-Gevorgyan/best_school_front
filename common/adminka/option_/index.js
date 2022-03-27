@@ -17,13 +17,6 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
   const [editItemIndex, setEditItemIndex] = useState(0);
   const [form] = Form.useForm();
 
-  // useEffect(() => {
-  //   const currentData = optionsItems[editItemIndex];
-  //   form.setFieldsValue({
-  //     title: currentData.title,
-  //   });
-  // }, [optionEdit]);
-
   const onClick = () => {
     setIsModalVisible(true);
   };

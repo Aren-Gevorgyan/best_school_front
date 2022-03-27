@@ -47,6 +47,8 @@
   }
 
   & > span {
+    overflow: hidden;
+    white-space: break-spaces;
     min-height: 50px;
     border: 1px solid #001529;
     border-radius: 5px;
