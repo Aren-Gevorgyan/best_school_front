@@ -42,7 +42,7 @@ const QuestionModal = ({
     setIsModalVisible(false);
     setClickAnswer(false);
     setAnswerIndex(false);
-    Router.push(`/question/622c6506230743b4c5d9428e?question=1`, undefined, {
+    Router.push(`/`, undefined, {
       scroll: true,
       shallow: true,
     });
@@ -75,7 +75,7 @@ const QuestionModal = ({
       />
       <div className={styles.buttonContainer}>
         <button onClick={againQuestion}>Կրկին փորձել</button>
-        <button onClick={redirectOptionPage()}>Վերադառնալ հարցաշար</button>
+        <button onClick={redirectOptionPage}>Վերադառնալ հարցաշար</button>
       </div>
     </Modal>
   );

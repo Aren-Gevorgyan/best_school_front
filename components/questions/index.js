@@ -59,13 +59,13 @@ const Questions = ({ questions }) => {
             <h2>
               {questionNumber}) {question.title}
             </h2>
-            <div className={styles.containerImage}>
+            {question.image && <div className={styles.containerImage}>
               <Image
                 layout="fill"
                 src={question.image}
                 alt="BestSchool image"
               />
-            </div>
+            </div>}
             <div className={styles.containerAnswers}>
               {question.answers.map((value, index) => {
                 return (
@@ -77,11 +77,11 @@ const Questions = ({ questions }) => {
                     className={cn(
                       styles.answers,
                       answersIndex === index &&
-                        answersIndex !== question.rightAnswer &&
-                        styles.falseAnswer,
+                      answersIndex !== question.rightAnswer &&
+                      styles.falseAnswer,
                       clickAnswer &&
-                        index === question.rightAnswer &&
-                        styles.right,
+                      index === question.rightAnswer &&
+                      styles.right,
                       clickAnswer && styles.disabled
                     )}
                   >
