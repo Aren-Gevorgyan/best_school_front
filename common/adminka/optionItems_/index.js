@@ -42,7 +42,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
   }, [itemsData]);
 
   useEffect(() => {
-    if (!isModalVisible) {
+    if (!editOptionItem) {
       form.resetFields();
       setImg("");
     }

@@ -44,7 +44,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
   };
 
   useEffect(() => {
-    if (!isModalVisible) {
+    if (!editQuestion) {
       form.resetFields();
       setRightAnswer(0);
       setSelectedAnswers([]);
