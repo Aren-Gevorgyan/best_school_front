@@ -1,3 +1,3 @@
 module.exports = {
-  clientApi: "http://localhost:3020/",
+  clientApi: "http://best-school-app.herokuapp.com",
 };
