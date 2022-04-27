@@ -32,7 +32,7 @@ const CommonLayout = ({ children }) => {
               <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
             </a>
           </Link>
-          <Link href={`${clientApi}adminka`}>
+          <Link href={`https://best-start-school.herokuapp.com/adminka`}>
             <a
               className={cn(
                 styles.router,

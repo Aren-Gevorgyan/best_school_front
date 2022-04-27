@@ -31,7 +31,7 @@ const QuestionItems = ({
     const items = questionData?.map((value, index) => {
       return (
         <div key={value._id + index} className={styles.containerItems}>
-          <h2>{value.title}</h2>
+          <h2>{value?.title}</h2>
           {!!value?.answers?.length ? (
             <p>Answers: {value?.answers?.length}</p>
           ) : (
