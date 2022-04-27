@@ -25,7 +25,7 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
     if (isModalVisible && optionEdit) {
       const currentData = optionsItems[editItemIndex];
       form.setFieldsValue({
-        title: currentData.title,
+        title: currentData?.title,
       });
     } else {
       form.resetFields();
@@ -34,7 +34,7 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
 
   const saveData = async (e) => {
     const data = {
-      title: e.title,
+      title: e?.title,
     };
 
     const optionUrl = `${clientApi}option/create`;
@@ -56,7 +56,7 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
     const optionUrl = `${clientApi}option/${id}`;
 
     const data = {
-      title: e.title,
+      title: e?.title,
     };
 
     const option = await fetch(optionUrl, {

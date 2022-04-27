@@ -31,8 +31,8 @@ const CreateOptionItems = ({ itemsData, options }) => {
   useEffect(() => {
     const currentData = items[editItemIndex];
     form.setFieldsValue({
-      title: currentData.title,
-      chooseOption: currentData.optionId,
+      title: currentData?.title,
+      chooseOption: currentData?.optionId,
     });
     setImg(currentData.image);
   }, [editOptionItem]);
@@ -52,7 +52,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
     if (loadingImg) return;
 
     const data = {
-      title: e.title,
+      title: e?.title,
       image: img,
       optionId: e.chooseOption,
     };
@@ -79,7 +79,7 @@ const CreateOptionItems = ({ itemsData, options }) => {
     const optionsData = options?.map((value, index) => {
       return (
         <Option key={value._id + index} value={value._id}>
-          {value.title}
+          {value?.title}
         </Option>
       );
     });
@@ -90,8 +90,8 @@ const CreateOptionItems = ({ itemsData, options }) => {
     const optionItemUrl = `${clientApi}option-items/${id}`;
 
     const data = {
-      title: e.title,
-      optionId: e.chooseOption,
+      title: e?.title,
+      optionId: e?.chooseOption,
       image: img,
     };
 

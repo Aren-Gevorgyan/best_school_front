@@ -25,7 +25,7 @@ const Option = ({ options, setOptionsItems, setIsModalVisible, setOptionEdit, se
     const items = options?.map((value, index) => {
       return (
         <div key={value._id + index} className={styles.containerItems}>
-          <h2>{value.title}</h2>
+          <h2>{value?.title}</h2>
           <div className={styles.settings}>
             <i
               className="fa fa-trash-o"
