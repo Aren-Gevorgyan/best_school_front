@@ -27,7 +27,7 @@ const CommonLayout = ({ children }) => {
           mode="horizontal"
           defaultSelectedKeys={[asPath]}
         >
-          <Link href={clientApi}>
+          <Link href={'https://best-start-school.herokuapp.com/'}>
             <a className={cn(styles.router, asPath === "/" && styles.active)}>
               <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
             </a>
