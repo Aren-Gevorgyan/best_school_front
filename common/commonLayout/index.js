@@ -5,6 +5,7 @@ import Router, { useRouter } from "next/router";
 import styles from "./styles.module.scss";
 import Link from "next/link";
 import cn from "classnames";
+import { clientApi } from "../../api/client";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -26,12 +27,12 @@ const CommonLayout = ({ children }) => {
           mode="horizontal"
           defaultSelectedKeys={[asPath]}
         >
-          <Link href={"http://localhost:3000"}>
+          <Link href={clientApi}>
             <a className={cn(styles.router, asPath === "/" && styles.active)}>
               <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
             </a>
           </Link>
-          <Link href={"http://localhost:3000/adminka"}>
+          <Link href={`${clientApi}adminka`}>
             <a
               className={cn(
                 styles.router,
