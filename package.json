@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
+    "heroku-postbulid": "npm run build",
     "lint": "next lint",
     "optimize-svg": "svgo --config=.svgo.yml -f ./public/icons",
     "convert-svg": "svgr -d ./common/svgIcons ./public/icons && npm run format:icons"
