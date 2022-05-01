@@ -125,7 +125,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
 
   return (
     <div className={styles.container}>
-      <h2>Create Question</h2>
+      <h2>Create Question ({questionsData.length})</h2>
       <div className={styles.containerItems}>
         <CreateItem onClick={onClick} />
         <QuestionItems

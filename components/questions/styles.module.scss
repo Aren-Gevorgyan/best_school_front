@@ -24,17 +24,17 @@
       align-items: center;
       overflow: hidden;
       border-radius: 10px;
-      margin-bottom: 50px;
+      margin-bottom: 10px;
     }
     h2 {
       text-align: center;
       font-size: $clamp1;
       color: $black;
       word-break: break-all;
-      margin-bottom: 50px;
     }
     .containerAnswers {
-      min-height: 300px;
+      min-height: 150px;
+      margin-bottom: 20px;
       .answers {
         border: 1px solid;
         display: flex;
