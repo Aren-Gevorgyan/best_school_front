@@ -91,7 +91,7 @@ const CreateOption = ({ optionsItems, setOptionsItems }) => {
         />
       </Head>
       <div className={styles.container}>
-        <h2>Create Option</h2>
+        <h2>Create Option ({optionsItems.length})</h2>
 
         <div className={styles.containerItems}>
           <CreateItem onClick={onClick} />
