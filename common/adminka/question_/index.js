@@ -61,12 +61,11 @@ const CreateQuestion = ({ optionsItems, questions }) => {
     }
 
     const data = {
-      title: e.title,
+      title: e?.title,
       image: img,
       answers: selectedAnswers,
-      //pars number
       rightAnswer: +rightAnswer,
-      optionId: e.chooseQuestion,
+      optionId: e?.chooseQuestion,
     };
 
     const questionsUrl = `${clientApi}questions/create`;
@@ -98,10 +97,9 @@ const CreateQuestion = ({ optionsItems, questions }) => {
     const optionItemUrl = `${clientApi}questions/${id}`;
 
     const data = {
-      title: e.title,
-      optionId: e.chooseOption,
+      title: e?.title,
+      optionId: e?.chooseOption,
       answers: selectedAnswers,
-      //pars number
       rightAnswer: +rightAnswer,
       image: img,
     };
@@ -125,7 +123,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
 
   return (
     <div className={styles.container}>
-      <h2>Create Question</h2>
+      <h2>Create Question ({questionsData.length})</h2>
       <div className={styles.containerItems}>
         <CreateItem onClick={onClick} />
         <QuestionItems

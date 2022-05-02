@@ -57,7 +57,7 @@ const Questions = ({ questions }) => {
           <h2>ԱՅՍ ԹԵՄԱՅՈՎ ՔՆՆԱԿԱՆ ՀԱՐՑԵՐԸ</h2>
           <div className={styles.content}>
             <h2>
-              {questionNumber}) {question.title}
+              {questionNumber}) {question?.title}
             </h2>
             {question.image && <div className={styles.containerImage}>
               <Image

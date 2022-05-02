@@ -43,7 +43,7 @@ const Home = ({ options }) => {
                         alt="Best image"
                       />
                     )}
-                    <p>{items.title}</p>
+                    <p>{items?.title}</p>
                   </div>
                 </>
               );
