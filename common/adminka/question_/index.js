@@ -64,7 +64,6 @@ const CreateQuestion = ({ optionsItems, questions }) => {
       title: e?.title,
       image: img,
       answers: selectedAnswers,
-      //pars number
       rightAnswer: +rightAnswer,
       optionId: e?.chooseQuestion,
     };
@@ -101,7 +100,6 @@ const CreateQuestion = ({ optionsItems, questions }) => {
       title: e?.title,
       optionId: e?.chooseOption,
       answers: selectedAnswers,
-      //pars number
       rightAnswer: +rightAnswer,
       image: img,
     };
