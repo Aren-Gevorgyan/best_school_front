@@ -5,18 +5,12 @@ import Router, { useRouter } from "next/router";
 import styles from "./styles.module.scss";
 import Link from "next/link";
 import cn from "classnames";
-import { clientApi } from "../../api/client";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const CommonLayout = ({ children }) => {
   const router = useRouter();
   const asPath = router.asPath === "/adminka" ? "adminka" : "/";
-
-  // const selectMenu = (e) => {
-  //   const path = `${e.key}`;
-  //   router.push(path, undefined, { shallow: false });
-  // };
 
   return (
     <Layout className="site-layout">
@@ -27,19 +21,9 @@ const CommonLayout = ({ children }) => {
           mode="horizontal"
           defaultSelectedKeys={[asPath]}
         >
-          <Link href={'https://best-start-school.herokuapp.com/'}>
+          <Link href={"https://best-start-school.herokuapp.com/"}>
             <a className={cn(styles.router, asPath === "/" && styles.active)}>
               <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
-            </a>
-          </Link>
-          <Link href={`https://best-start-school.herokuapp.com/adminka`}>
-            <a
-              className={cn(
-                styles.router,
-                asPath === "adminka" && styles.active
-              )}
-            >
-              <Menu.Item>ԱԴՄԻՆ</Menu.Item>
             </a>
           </Link>
         </Menu>
