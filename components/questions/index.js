@@ -54,7 +54,7 @@ const Questions = ({ questions }) => {
     <CommonLayout>
       <>
         <div className={styles.container}>
-          <h2>ԱՅՍ ԹԵՄԱՅՈՎ ՔՆՆԱԿԱՆ ՀԱՐՑԵՐԸ ({questions.length})</h2>
+          <h2>ԱՅՍ ԹԵՄԱՅՈՎ ՔՆՆԱԿԱՆ ՀԱՐՑԵՐԸ ( {questions.length} )</h2>
           <div className={styles.content}>
             <h2>
               {questionNumber}) {question?.title}
