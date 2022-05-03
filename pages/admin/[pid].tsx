@@ -1,11 +1,10 @@
 import { clientApi } from "../../api/client";
 import Adminka from "../../components/adminka";
-import Router from "next/router";
 
 export default Adminka;
 
 export async function getServerSideProps(context: { params: { pid: Object } }) {
-  if (context.params.pid !== "55730010") return Router.push(`/404`);
+  if (context.params.pid !== "55730010") throw new Error("404");
 
   const optionUrl = `${clientApi}option`;
   const questionUrl = `${clientApi}questions`;
