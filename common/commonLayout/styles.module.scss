@@ -13,10 +13,10 @@
     justify-content: initial;
     overflow: scroll;
     padding: 0;
-    margin: 80px, 16px;
+    padding: 80px 16px;
   }
   @include media-sm {
-    margin: 40px, 0px;
+    padding: 30px 10px;
   }
 }
 .header {
