@@ -6,11 +6,11 @@ import styles from "./styles.module.scss";
 import Link from "next/link";
 import cn from "classnames";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const CommonLayout = ({ children }) => {
   const router = useRouter();
-  const asPath = router.asPath === "/adminka" ? "adminka" : "/";
+  const { asPath } = router;
 
   return (
     <Layout className="site-layout">
@@ -22,7 +22,7 @@ const CommonLayout = ({ children }) => {
           defaultSelectedKeys={[asPath]}
         >
           <Link href={"https://best-start-school.herokuapp.com/"}>
-            <a className={cn(styles.router, asPath === "/" && styles.active)}>
+            <a className={cn(styles.router, styles.active)}>
               <Menu.Item>ԳԼԽԱՎՈՐ</Menu.Item>
             </a>
           </Link>
