@@ -18,6 +18,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [rightAnswer, setRightAnswer] = useState(0);
   const [optionItems, setOptionItems] = useState([]);
+  const [selectedOptionItems, setSelectedOptionItems] = useState([]);
   const [editQuestion, setEditQuestion] = useState(false);
   const [editQuestionIndex, setEditQuestionIndex] = useState(0);
   const [questionsData, setQuestionsData] = useState(questions);
@@ -65,7 +66,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
       image: img,
       answers: selectedAnswers,
       rightAnswer: +rightAnswer,
-      optionId: e?.chooseQuestion,
+      optionId: selectedOptionItems,
     };
 
     const questionsUrl = `${clientApi}questions/create`;
@@ -98,7 +99,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
 
     const data = {
       title: e?.title,
-      optionId: e?.chooseOption,
+      optionId: selectedOptionItems,
       answers: selectedAnswers,
       rightAnswer: +rightAnswer,
       image: img,
@@ -194,6 +195,7 @@ const CreateQuestion = ({ optionsItems, questions }) => {
               <Select
                 className={styles.questionItem}
                 showSearch
+                onChange={setSelectedOptionItems}
                 placeholder="Select a person"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
