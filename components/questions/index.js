@@ -18,6 +18,10 @@ const Questions = ({ questions }) => {
   const questionIsDone = questionNumber === questions.length;
   const disabledNextButton = !clickAnswer;
 
+  useEffect(()=>{
+    setRightAnswerCount(0);
+  }, [isModalVisible])
+
   const nextQuestion = () => {
     if (questionIsDone) return setIsModalVisible(true);
     setClickAnswer(false);
@@ -44,6 +48,7 @@ const Questions = ({ questions }) => {
     setAnswerIndex(index);
     const rightAnswer = question?.rightAnswer === index;
     if (rightAnswer) {
+      console.log(rightAnswerCount, 'rightAnswerCountdd');
       setRightAnswerCount(rightAnswerCount + 1);
     }
   };

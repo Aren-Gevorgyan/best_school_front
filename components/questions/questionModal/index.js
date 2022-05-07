@@ -18,12 +18,12 @@ const QuestionModal = ({
 
   useEffect(() => {
     const percent = Math.round((rightAnswerCount * 100) / questions.length);
-    if (parent > 90) {
+    if (percent >= 90) {
       setAnswerText("Գերազանց է։");
-    } else if (parent > 50) {
+    } else if (percent >= 50) {
       setAnswerText("Վատ չի, բայց բավարար էլ չի։");
     } else {
-      setAnswerText("Բավարար չէ, կրկին փորցիր։");
+      setAnswerText("Բավարար չէ, կրկին փորձիր։");
     }
     setPercent(percent);
   }, [isModalVisible]);
